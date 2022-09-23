@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"os"
 )
 
-//	func main() {
-//		multiThreadeddl("https://google.com", "threaded-google.txt")
-//	}
+func main() {
+	multiThreadeddl("https://google.com", "threaded-google.txt")
+}
 func multiThreadeddl(url string, file string) {
 	bufferChan := make(chan []byte)
 	go downloadThreaded(bufferChan, url)
@@ -18,15 +17,14 @@ func multiThreadeddl(url string, file string) {
 		os.Exit(1)
 	}
 	defer f.Close()
-	for data, ok := <-bufferChan; ok; {
-		fmt.Println(data)
+	for data := range bufferChan {
 		f.Write(data)
 	}
 }
 
 // download a page and returns a byte array
 func downloadThreaded(bufferChan chan []byte, url string) {
-	var bodybuff []byte
+
 	resp, err := http.Get(url)
 	if err != nil {
 		bufferChan <- nil
@@ -34,11 +32,10 @@ func downloadThreaded(bufferChan chan []byte, url string) {
 
 	defer resp.Body.Close()
 
-	for b, r := io.ReadAtLeast(resp.Body, bodybuff, 1024); b == 0 && r != nil; {
-		fmt.Println(" sending buffer")
-		bufferChan <- bodybuff
-		fmt.Println("sent buffer")
+	bodyBuff, err := io.ReadAll(resp.Body)
+	if err != nil {
+		bufferChan <- nil
 	}
-
+	bufferChan <- bodyBuff
 	close(bufferChan)
 }

@@ -9,8 +9,10 @@ type testItem struct {
 
 var tests = []testItem{
 	{"https://google.com", "google.txt"},
-	{"https://facebook.com", "facebook.txt"},
-	{"https://airbnb.com", "airbnb.txt"},
+	{"https://google.com", "google.txt"},
+	{"https://google.com", "google.txt"},
+	{"https://google.com", "google.txt"},
+	{"https://google.com", "google.txt"},
 }
 
 func BenchmarkSingleThread(t *testing.B) {
