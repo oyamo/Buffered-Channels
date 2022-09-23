@@ -2,8 +2,9 @@
 
 `go 1.19`
 
-This is implementation of lightweight threads (Goroutines) in Golang. The scripts download webpages concurrently and a benchmark is determined between a scrapper that implements Goroutines and one that does not.
-
+This is implementation of lightweight threads (Goroutines) in Golang. The scripts download webpages concurrently and saves them to a text file. A benchmark is carried out to  determine the performance when using goroutines and when not.
+## Benchmark Screenshot
+![image](./screenshots/img.png)
 ## Benchmarking
 ```shell
 go test -bench=.
